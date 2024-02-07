@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+option csharp_namespace = "Password_Storage_Server";
+
+package greet;
+
+service Greeter {
+  rpc UserAuth (UserDataRequest) returns (TokenReply);
+  rpc UserRegister(RegisterRequest) returns (RegisterReply);
+  rpc UserGetInfo(InfoRequest) returns (InfoReply);
+  rpc UserUpdateInfo(UpdateRequest) returns (UpdateReply);
+}
+
+message UserDataRequest {
+  string login = 1;
+  string password =2;
+}
+
+message TokenReply {
+  enum StatusCode
+  {
+    UserNotFound = 0;
+    OK = 200;
+    InternalServerError = 500;
+    LoginAlreadyUse = 100;
+    IncorrectPassword = 50;
+  }
+  string accessToken = 1;
+  string refreshToken = 2;
+  string login = 3;
+  StatusCode replyCode = 4;
+}
+
+message RegisterRequest{
+  string login = 1;
+  string password = 2;
+  string passwordConfirm = 3;
+}
+
+message RegisterReply{
+  enum StatusCode
+  {
+    UserNotFound = 0;
+    OK = 200;
+    InternalServerError = 500;
+    LoginAlreadyUse = 100;
+  }
+
+  StatusCode replyCode = 1;
+}
+
+message InfoRequest{
+  string accessToken =1;
+  string refreshToken = 2;
+  string login = 3;
+}
+
+message InfoReply{
+  enum StatusCode
+  {
+    Unlogin = 0;
+    Ok = 200;
+  }
+
+  string list = 1;
+  StatusCode replyCode = 2;
+  string accessToken = 3;
+  string refreshToken = 4;
+}
+
+message UpdateRequest {
+  string accessToken =1;
+  string refreshToken = 2;
+  string login = 3;
+  string list = 4;
+}
+
+message UpdateReply {
+  string accessToken = 1;
+  string refreshToken = 2;
+}
