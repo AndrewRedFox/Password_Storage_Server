@@ -60,7 +60,7 @@ public sealed class UserInfoService : IUserInfoService
         if(_entity.UserInfo.IsNullOrEmpty()) return list;
         foreach (var item in _entity.UserInfo)
         {
-            list += "." + item.ApplicationName + "/" + item.Login + "/" + item.Password;
+            list += "`" + item.ApplicationName + "~" + item.Login + "~" + item.Password;
         }
         return list;
     }
@@ -68,13 +68,13 @@ public sealed class UserInfoService : IUserInfoService
     private List<UserInfoEntity> _UpdateList(string list)
     {
         List<UserInfoEntity> listOfInfo = new();
-        var l = list.Split('.').ToList();
+        var l = list.Split('`').ToList();//.
         l.RemoveAll(s => s == "");
 
         foreach(var pair in l)
         {
             UserInfoEntity userInfo = new();
-            string[] words = pair.Split(new char[] { '/' });
+            string[] words = pair.Split(new char[] { '~' });///
             userInfo.ApplicationName = words[0];
             userInfo.Login = words[1];
             userInfo.Password = words[2];
